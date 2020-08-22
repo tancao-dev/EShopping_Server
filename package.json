@@ -1,0 +1,27 @@
+{
+  "name": "package",
+  "version": "1.0.0",
+  "description": "Server a web api server for EShopping Client, using .net core 2.2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tancao-dev/EShopping_Server.git"
+  },
+  "author": "tan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tancao-dev/EShopping_Server/issues"
+  },
+  "homepage": "https://github.com/tancao-dev/EShopping_Server#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "msnodesqlv8": "^2.0.3",
+    "mssql": "^6.2.1"
+  }
+}
