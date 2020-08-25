@@ -1,6 +1,16 @@
 {
-    "getAllData" : "SELECT * FROM [dbo].[AppChains]",
-    "addNewUser" :"INSERT INTO [dbo].[user_info] (name,email,password) VALUES (@user,@email,@password) ",
-    "deleteUser" : "DELETE FROM [dbo].[user_info] WHERE name = @userName",
-    "updateUserDetails" : "UPDATE [dbo].[user_info] SET password = @newPassword WHERE name = @userName"
+  "getAllUser": "SELECT * FROM [dbo].[taikhoan]",
+  "addNewUser": "INSERT INTO [dbo].[taikhoan] (hoten,ngaysinh,CMND,diachi,tendangnhap,matkhau,email,vaitro,tinhtrang) VALUES (@hoten,@ngaysinh,@CMND,@diachi,@tendangnhap,@matkhau,@email,@vaitro,@tinhtrang) ",
+  "checkUserValid": "SELECT * FROM [dbo].[taikhoan] WHERE tendangnhap=@tendangnhap AND matkhau=@matkhau",
+  "getProductsById": "SELECT * FROM [dbo].[sanpham] WHERE (idnhomsanpham = @idnhomsanpham)",
+  "getProductDetailsById": "SELECT * FROM [dbo].[sanpham] WHERE (id = @id)",
+  "addProductToCart": "",
+  "deleteProductFromCart": "",
+  "getCheckoutById": "",
+  "payCheckOut": "",
+  "getAllCategory": "select * from dbo.nhomsanpham",
+  "getShoppingCartById": "select sp.* from dbo.taikhoan_giohang as tk_gh, dbo.giohang as gh, dbo.chitietgiohang as ct_gh, dbo.sanpham as sp where tk_gh.idtaikhoan = @id and ct_gh.idgiohang = gh.id and ct_gh.idsanpham = sp.id",
+  "deleteUser": "DELETE FROM  WHERE name = @tendangnhap",
+  "updateUserDetails": "UPDATE [dbo].[user_info] SET password = @newPassword WHERE name = @userName"
 }
+
