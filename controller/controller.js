@@ -61,25 +61,27 @@ class MainController {
 
   async postUpdateProduct(req, res) {
     try {
-      if ( req.body.ten != null &&
+      if (
+        req.body.ten != null &&
         req.body.nhasanxuat != null &&
         req.body.hinhanh != null &&
         req.body.mota != null &&
         req.body.thongso != null &&
         req.body.giabanhienhanh != null &&
-        req.body.idnhomsanpham != null) {
+        req.body.idnhomsanpham != null
+      ) {
         const pool = await poolPromise;
         const result = await pool
-        .request()
-        .input("maso", sql.VarChar, req.body.maso)
-        .input("ten", sql.NVarChar, req.body.ten)
-        .input("nhasanxuat", sql.NVarChar, req.body.nhasanxuat)
-        .input("hinhanh", sql.VarChar, req.body.hinhanh)
-        .input("mota", sql.NVarChar, req.body.mota)
-        .input("thongso", sql.NVarChar, req.body.thongso)
-        .input("giabanhienhanh", sql.Float, req.body.giabanhienhanh)
-        .input("tinhtrang", sql.SmallInt, req.body.tinhtrang)
-        .query(queries.updateProduct);
+          .request()
+          .input("maso", sql.VarChar, req.body.maso)
+          .input("ten", sql.NVarChar, req.body.ten)
+          .input("nhasanxuat", sql.NVarChar, req.body.nhasanxuat)
+          .input("hinhanh", sql.VarChar, req.body.hinhanh)
+          .input("mota", sql.NVarChar, req.body.mota)
+          .input("thongso", sql.NVarChar, req.body.thongso)
+          .input("giabanhienhanh", sql.Float, req.body.giabanhienhanh)
+          .input("tinhtrang", sql.SmallInt, req.body.tinhtrang)
+          .query(queries.updateProduct);
         res.json(result);
       } else {
         res.send("All fields are required!");
@@ -113,6 +115,34 @@ class MainController {
     try {
       const pool = await poolPromise;
       const result = await pool.request().query(queries.getAllCategory);
+      res.json(result.recordset);
+    } catch (error) {
+      res.status(500);
+      res.send(error.message);
+    }
+  }
+
+  async getProducts(req, res) {
+    try {
+      const pool = await poolPromise;
+      const result = await pool
+        .request()
+        .input("idnhomsanpham", sql.Int, req.params.idnhomsanpham)
+        .query(queries.getProductsById);
+      res.json(result.recordset);
+    } catch (error) {
+      res.status(500);
+      res.send(error.message);
+    }
+  }
+
+  async getProductDetails(req, res) {
+    try {
+      const pool = await poolPromise;
+      const result = await pool
+        .request()
+        .input("id", sql.Int, req.params.id)
+        .query(queries.getProductDetailsById);
       res.json(result.recordset);
     } catch (error) {
       res.status(500);
@@ -170,6 +200,38 @@ class MainController {
     try {
       const pool = await poolPromise;
       const result = await pool.request().query(queries.getAllData);
+    } catch (error) {
+      res.status(500);
+      res.send(error.message);
+    }
+  }
+  async addRecipient(req, res) {
+    try {
+      if (
+        req.body.hoten != null &&
+        req.body.diachi != null &&
+        req.body.SDT != null &&
+        req.body.idtaikhoan != null
+      ) {
+        const pool = await poolPromise;
+        const result = await pool
+          .request()
+          .input("hoten", sql.NVarChar, req.body.hoten)
+          .input("diachi", sql.NVarChar, req.body.diachi)
+          .input("SDT", sql.VarChar, req.body.SDT)
+          .input("idtaikhoan", sql.Int, req.body.idtaikhoan)
+          .query(queries.addRecipient);
+          if (result) {
+            res.json({ success: true, data: "Tạo mới thành công" });
+          } else {
+            res.json({
+              success: false,
+              data: "Please fill all the details!",
+            });
+          }
+      } else {
+        res.send("Please fill all the details!");
+      }
     } catch (error) {
       res.status(500);
       res.send(error.message);

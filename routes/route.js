@@ -16,9 +16,12 @@ router.get('/api/user/getAllData', controller.getAllData);
 router.post('/api/user/login', controller.login);
 router.post('/api/user/cart',controller.getShoppingCart);
 router.post('/api/user/signup', controller.signup)
+router.post('/api/user/addRecipient', controller.addRecipient)
 
 // General
 router.get('/api/general/categories', controller.getAllCategory);
+router.get('/api/general/:idnhomsanpham/products', controller.getProducts);
+router.get('/api/general/product/:id', controller.getProductDetails);
 // router.post('/api/signup',controller.signup);
 // router.post('/api/addNewData' , controller.addNewData);
 // router.put('/api/updateData',controller.updateData);

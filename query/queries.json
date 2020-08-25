@@ -6,17 +6,21 @@
   "addProduct": "INSERT INTO [dbo].[sanpham] (maso,ten,nhasanxuat,hinhanh,mota,thongso,giabanhienhanh,idnhomsanpham) VALUES (@maso,@ten,@nhasanxuat,@hinhanh,@mota,@thongso,@giabanhienhanh,@idnhomsanpham)",
   "updateProduct": "UPDATE [dbo].[sanpham] SET maso = @maso,ten = @ten, nhasanxuat = @nhasanxuat,hinhanh = @hinhanh,mota = @mota,thongso = @thongso,giabanhienhanh = @giabanhienhanh,idnhomsanpham = @idnhomsanpham  WHERE id = @id",
   "deleteProduct": "DELETE FROM [dbo].[sanpham] WHERE id = @id",
-  
+
   "addNewUser": "INSERT INTO [dbo].[taikhoan] (hoten,ngaysinh,CMND,diachi,tendangnhap,matkhau,email,vaitro,tinhtrang) VALUES (@hoten,@ngaysinh,@CMND,@diachi,@tendangnhap,@matkhau,@email,@vaitro,@tinhtrang)",
   "checkUserValid": "SELECT * FROM [dbo].[taikhoan] WHERE tendangnhap=@tendangnhap AND matkhau=@matkhau",
-  "getProductsById": "SELECT * FROM [dbo].[sanpham] WHERE (idnhomsanpham = @idnhomsanpham)",
-  "getProductDetailsById": "SELECT * FROM [dbo].[sanpham] WHERE (id = @id)",
   "addProductToCart": "",
   "deleteProductFromCart": "",
   "getCheckoutById": "",
   "payCheckOut": "",
+
+  "addRecipient": "INSERT INTO [dbo].[nguoinhanhang] (hoten,diachi,SDT,idtaikhoan) VALUES (@hoten,@diachi,@SDT,@idtaikhoan)",
+  "getShoppingCartById": "begin select sp.* from chitietgiohang as ctgh, taikhoan as tk, giohang as gh, sanpham as sp where tk.id = 2 and gh.idtaikhoan = tk.id and gh.id = ctgh.idgiohang and ctgh.idsanpham = sp.id end",
+  
   "getAllCategory": "select * from dbo.nhomsanpham",
-  "getShoppingCartById": "select sp.* from dbo.taikhoan_giohang as tk_gh, dbo.giohang as gh, dbo.chitietgiohang as ct_gh, dbo.sanpham as sp where tk_gh.idtaikhoan = @id and ct_gh.idgiohang = gh.id and ct_gh.idsanpham = sp.id",
+  "getProductsById": "SELECT * FROM [dbo].[sanpham] WHERE (idnhomsanpham = @idnhomsanpham)",
+  "getProductDetailsById": "SELECT * FROM [dbo].[sanpham] WHERE (id = @id)",
+
   "deleteUser": "DELETE FROM  WHERE name = @tendangnhap",
   "updateUserDetails": "UPDATE [dbo].[user_info] SET password = @newPassword WHERE name = @userName"
 }
