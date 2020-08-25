@@ -1,6 +1,13 @@
 {
-  "getAllUser": "SELECT * FROM [dbo].[taikhoan]",
-  "addNewUser": "INSERT INTO [dbo].[taikhoan] (hoten,ngaysinh,CMND,diachi,tendangnhap,matkhau,email,vaitro,tinhtrang) VALUES (@hoten,@ngaysinh,@CMND,@diachi,@tendangnhap,@matkhau,@email,@vaitro,@tinhtrang) ",
+  "getListUsers": "SELECT * FROM [dbo].[taikhoan]",
+  "toggleStatusUser": "UPDATE [dbo].[taikhoan] SET tinhtrang = @tinhtrang WHERE tendangnhap = @tendangnhap",
+  "getListProducts": "SELECT * FROM [dbo].[sanpham]",
+  "getProductById": "SELECT * FROM [dbo].[sanpham] WHERE id = @id",
+  "addProduct": "INSERT INTO [dbo].[sanpham] (maso,ten,nhasanxuat,hinhanh,mota,thongso,giabanhienhanh,idnhomsanpham) VALUES (@maso,@ten,@nhasanxuat,@hinhanh,@mota,@thongso,@giabanhienhanh,@idnhomsanpham)",
+  "updateProduct": "UPDATE [dbo].[sanpham] SET maso = @maso,ten = @ten, nhasanxuat = @nhasanxuat,hinhanh = @hinhanh,mota = @mota,thongso = @thongso,giabanhienhanh = @giabanhienhanh,idnhomsanpham = @idnhomsanpham  WHERE id = @id",
+  "deleteProduct": "DELETE FROM [dbo].[sanpham] WHERE id = @id",
+  
+  "addNewUser": "INSERT INTO [dbo].[taikhoan] (hoten,ngaysinh,CMND,diachi,tendangnhap,matkhau,email,vaitro,tinhtrang) VALUES (@hoten,@ngaysinh,@CMND,@diachi,@tendangnhap,@matkhau,@email,@vaitro,@tinhtrang)",
   "checkUserValid": "SELECT * FROM [dbo].[taikhoan] WHERE tendangnhap=@tendangnhap AND matkhau=@matkhau",
   "getProductsById": "SELECT * FROM [dbo].[sanpham] WHERE (idnhomsanpham = @idnhomsanpham)",
   "getProductDetailsById": "SELECT * FROM [dbo].[sanpham] WHERE (id = @id)",
