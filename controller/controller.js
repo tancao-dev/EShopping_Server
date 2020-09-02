@@ -1,5 +1,6 @@
 const { sql, poolPromise } = require("../database/db");
 const fs = require("fs");
+const { cpuUsage } = require("process");
 var rawdata = fs.readFileSync("./query/queries.json");
 var queries = JSON.parse(rawdata);
 
@@ -98,12 +99,39 @@ class MainController {
         const pool = await poolPromise;
         const result = await pool
           .request()
-          .input("id", sql.Int, req.body.id)
+          .input("idsanpham", sql.Int, req.body.idsanpham)
+          .input("idgiohang", sql.Int, req.body.idgiohang)
           .query(queries.deleteProduct);
         res.json(result);
       } else {
         res.send("Please fill all the details!");
       }
+    } catch (error) {
+      res.status(500);
+      res.send(error.message);
+    }
+  }
+  async getRecipients(req, res) {
+    try {
+      const pool = await poolPromise;
+      const result = await pool
+        .request()
+        .input("idtaikhoan", sql.Int, req.params.id)
+        .query(queries.getListRecipients);
+      res.json(result.recordset);
+    } catch (error) {
+      res.status(500);
+      res.send(error.message);
+    }
+  }
+  async payCheckout(req, res) {
+    try {
+      const pool = await poolPromise;
+      const result = await pool
+        .request()
+        .input("idgiohang", sql.Int, req.body.idgiohang)
+        .query(queries.payCheckout);
+      res.json({ success: true, data: result.recordset });
     } catch (error) {
       res.status(500);
       res.send(error.message);
@@ -187,7 +215,7 @@ class MainController {
       const pool = await poolPromise;
       const result = await pool
         .request()
-        .input("id", sql.Int, req.body.id)
+        .input("idtaikhoan", sql.Int, req.body.idtaikhoan)
         .query(queries.getShoppingCartById);
       console.log(res.recordset);
       res.json({ success: true, data: result.recordset });
@@ -196,6 +224,83 @@ class MainController {
       res.send(error.message);
     }
   }
+  async addProductToCart(req, res) {
+    try {
+      const pool = await poolPromise;
+      var haveCart = await pool
+        .request()
+        .input("idtaikhoan", sql.Int, req.body.idtaikhoan)
+        .query(queries.checkCart);
+      console.log(haveCart.recordset[0].count);
+      if (haveCart.recordset[0].count === 0) {
+        var addNewCart = await pool
+          .request()
+          .input("idtaikhoan", sql.Int, req.body.idtaikhoan)
+          .query(queries.addNewCart);
+        var idgiohang = addNewCart.recordset[0].id;
+        console.log(addNewCart.recordset);
+      } else {
+        let queryGetCartId = await pool
+          .request()
+          .input("idtaikhoan", sql.Int, req.body.idtaikhoan)
+          .query(queries.getCartById);
+        var idgiohang = queryGetCartId.recordset[0].id;
+      }
+      const result = await pool
+        .request()
+        .input("idsanpham", sql.Int, req.body.idsanpham)
+        .input("idgiohang", sql.Int, idgiohang)
+        .query(queries.addProductToCart);
+      if (result) {
+        res.json({ success: true, data: "Thêm thành công" });
+      } else {
+        res.json({
+          success: false,
+          data: "Thêm thất bại",
+        });
+      }
+    } catch (error) {
+      res.status(500);
+      res.send(error.message);
+    }
+  }
+  async deleteProductFromCart(req, res) {
+    try {
+      const pool = await poolPromise;
+      const result = await pool
+        .request()
+        .input("idsanpham", sql.Int, req.body.idsanpham)
+        .input("idgiohang", sql.Int, req.body.idgiohang)
+        .query(queries.deleteProductFromCart);
+        console.log(result);
+      if (result) {
+        res.json({ success: true, data: "Xóa thành công" });
+      } else {
+        res.json({
+          success: false,
+          data: "Xóa thất bại",
+        });
+      }
+    } catch (error) {
+      res.status(500);
+      res.send(error.message);
+    }
+  }
+  async getCartId(req, res) {
+    try {
+      const pool = await poolPromise;
+      const result = await pool
+        .request()
+        .input("idtaikhoan", sql.Int, req.body.idtaikhoan)
+        .query(queries.getShoppingCartId);
+      console.log(result);
+      res.json({ success: true, data: result.recordset[0] });
+    } catch (error) {
+      res.status(500);
+      res.send(error.message);
+    }
+  }
+
   async checkValidUser(req, res) {
     try {
       const pool = await poolPromise;
@@ -221,14 +326,14 @@ class MainController {
           .input("SDT", sql.VarChar, req.body.SDT)
           .input("idtaikhoan", sql.Int, req.body.idtaikhoan)
           .query(queries.addRecipient);
-          if (result) {
-            res.json({ success: true, data: "Tạo mới thành công" });
-          } else {
-            res.json({
-              success: false,
-              data: "Please fill all the details!",
-            });
-          }
+        if (result) {
+          res.json({ success: true, data: "Tạo mới thành công" });
+        } else {
+          res.json({
+            success: false,
+            data: "Please fill all the details!",
+          });
+        }
       } else {
         res.send("Please fill all the details!");
       }
@@ -264,6 +369,7 @@ class MainController {
           .input("tinhtrang", sql.SmallInt, req.body.tinhtrang)
           .query(queries.addNewUser);
         res.json(result);
+        console.log(result);
       } else {
         res.send("Please fill all the details!");
       }

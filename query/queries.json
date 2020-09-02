@@ -8,20 +8,21 @@
   "deleteProduct": "DELETE FROM [dbo].[sanpham] WHERE id = @id",
 
   "addNewUser": "INSERT INTO [dbo].[taikhoan] (hoten,ngaysinh,CMND,diachi,tendangnhap,matkhau,email,vaitro,tinhtrang) VALUES (@hoten,@ngaysinh,@CMND,@diachi,@tendangnhap,@matkhau,@email,@vaitro,@tinhtrang)",
+  "addNewCart": "insert into giohang (idtaikhoan, tongtien) values (@idtaikhoan,0) select distinct(giohang.id) from giohang where giohang.idtaikhoan = @idtaikhoan",
+  "getCartById": "select distinct(giohang.id) from giohang where giohang.idtaikhoan = @idtaikhoan",
+  "deleteCartById": "DELETE FROM giohang WHERE idtaikhoan = @idtaikhoan",
   "checkUserValid": "SELECT * FROM [dbo].[taikhoan] WHERE tendangnhap=@tendangnhap AND matkhau=@matkhau",
-  "addProductToCart": "",
-  "deleteProductFromCart": "",
-  "getCheckoutById": "",
-  "payCheckOut": "",
-
+  "checkCart": "select count(*) as count from giohang where giohang.idtaikhoan = @idtaikhoan",
+  "addProductToCart": "insert into dbo.chitietgiohang (idsanpham, idgiohang) values (@idsanpham, @idgiohang)",
+  "deleteProductFromCart": "DELETE FROM chitietgiohang WHERE idsanpham = @idsanpham and idgiohang = @idgiohang",
   "addRecipient": "INSERT INTO [dbo].[nguoinhanhang] (hoten,diachi,SDT,idtaikhoan) VALUES (@hoten,@diachi,@SDT,@idtaikhoan)",
-  "getShoppingCartById": "begin select sp.* from chitietgiohang as ctgh, taikhoan as tk, giohang as gh, sanpham as sp where tk.id = 2 and gh.idtaikhoan = tk.id and gh.id = ctgh.idgiohang and ctgh.idsanpham = sp.id end",
-  
+  "getShoppingCartById": "begin select sp.* from chitietgiohang as ctgh, taikhoan as tk, giohang as gh, sanpham as sp where tk.id = @idtaikhoan and gh.idtaikhoan = tk.id and gh.id = ctgh.idgiohang and ctgh.idsanpham = sp.id end",
+  "getShoppingCartId": "select giohang.* from giohang where giohang.idtaikhoan = @idtaikhoan",
+  "getListRecipients": "select * from nguoinhanhang where idtaikhoan = @idtaikhoan",
+  "payCheckout": "delete from chitietgiohang where idgiohang = @idgiohang",
   "getAllCategory": "select * from dbo.nhomsanpham",
   "getProductsById": "SELECT * FROM [dbo].[sanpham] WHERE (idnhomsanpham = @idnhomsanpham)",
   "getProductDetailsById": "SELECT * FROM [dbo].[sanpham] WHERE (id = @id)",
-
   "deleteUser": "DELETE FROM  WHERE name = @tendangnhap",
   "updateUserDetails": "UPDATE [dbo].[user_info] SET password = @newPassword WHERE name = @userName"
 }
-
